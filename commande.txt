@@ -19,27 +19,32 @@ While we're at it, let's make sure the camera interface is enabled in the Raspbe
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Step 1b. Download this repository and create virtual environment
 Next, clone this GitHub repository by issuing the following command. The repository contains the scripts we'll use to run TensorFlow Lite, as well as a shell script that will make installing everything easier. Issue:
-git clone https://github.com/ASSEM-KARMI/Object-Detection.get
 
+git clone https://github.com/ASSEM-KARMI/Object-Detection.git
 
 This downloads everything into a folder called Object-Detection. That's a little long to work with, so rename the folder to "TFlite" and then cd into it:
 mv object-detection TFlite
 cd TFlite
 We'll work in this /home/pi/TFlite directory for the rest of the guide. Next up is to create a virtual environment called "TFlite-env".
 
-
 Install virtualenv by issuing:
+
 sudo pip3 install virtualenv
+
 Then, create the "TFlite-env" virtual environment by issuing:
+
 python3 -m venv TFlite-env 
 source TFlite-env/bin/activate
+
 You'll need to issue the source TFlite-env/bin/activate command from inside the /home/pi/TFlite directory to reactivate the environment every time you open a new terminal window. You can tell when the environment is active by checking if (TFlite-env) appears before the path in your command prompt, as shown in the screenshot below.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Step 1c. Install TensorFlow Lite dependencies and OpenCV
 Next, we'll install TensorFlow, OpenCV, and all the dependencies needed for both packages. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
 
 To make things easier, I wrote a shell script that will automatically download and install all the packages and dependencies. Run it by issuing:
+
 bash get_pi_requirements.sh
+
 NOTE: The shell script automatically installs the latest version of TensorFlow. If you'd like to install a specific version, issue pip3 install tensorflow==X.XX (where X.XX is replaced with the version you want to install) after running the script. This will override the existing installation with the specified version.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Step 1d. Set up TensorFlow Lite detection model
@@ -50,9 +55,13 @@ Option : Using Google's sample TFLite model
 Google provides a sample quantized SSDLite-MobileNet-v2 object detection model which is trained off the MSCOCO dataset and converted to run on TensorFlow Lite. It can detect and identify 80 different common objects, such as people, cars, cups, etc.
 
 Download the sample model (which can be found on the Object Detection page of the official TensorFlow website) by issuing:
+
 wget https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip
+
 Unzip it to a folder called "Sample_TFLite_model" by issuing (this command automatically creates the folder):
+
 unzip coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip -d Sample_TFLite_model
+
 Okay, the sample model is all ready to go! :) ;)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Step 1e. Run the TensorFlow Lite model!
@@ -61,18 +70,47 @@ It's time to see the TFLite object detection model in action! First, free up mem
 
 webcam
 Run the real-time webcam detection script by issuing the following command from inside the /home/pi/TFlite directory. (Before running the command, make sure the tflite1-env environment is active by checking that (TFlite-env) appears in front of the command prompt.) The TFLite_detection_webcam.py script will work with either a Picamera or a USB webcam.
+
 python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model
+
 After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
 
 
 Image
 To run the image detection script, issue:
+
 python TFLite_detection_image.py --modeldir=Sample_TFLite_model
+
 The image will appear with all objects labeled. Press 'q' to close the image and end the script.
 To open a specific image file, use the --image option:
-python TFLite_detection_image.py --modeldir=Sample_TFLite_model --image=image.jpg
 
+python TFLite_detection_image.py --modeldir=Sample_TFLite_model --image=image.jpg
 It can also open an entire folder full of images and perform detection on each image. There can only be images files in the folder, or errors will occur. To specify which folder has images to perform detection on, use the --imagedir option:
+
 python TFLite_detection_image.py --modeldir=Sample_TFLite_model --imagedir=test
 
 Press any key (other than 'q') to advance to the next image.
+
+
+Video
+To run the video detection script, issue:
+
+python TFLite_detection_image.py --modeldir=Sample_TFLite_model
+
+A window will appear showing consecutive frames from the video, with each object in the frame labeled. Press 'q' to close the window and end the script.To open a specific video file, use the --video option:
+
+python TFLite_detection_image.py --modeldir=Sample_TFLite_model --video='video.mp4'
+
+Note: Video detection will run at a slower FPS than realtime webcam detection. This is mainly because loading a frame from a video file requires more processor I/O than receiving a frame from a webcam.
+
+Video stream
+To run the script to detect images in a video stream (e.g. a remote security camera), issue:
+
+python TFLite_detection_stream.py --modeldir=TFLite_model --streamurl="http://ipaddress:port/stream/video.mjpeg"
+
+After a few moments of initializing, a window will appear showing the video stream. Detected objects will have bounding boxes and labels displayed on them in real time.
+
+
+
+
+
