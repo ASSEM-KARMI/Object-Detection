@@ -22,19 +22,18 @@ Next, clone this GitHub repository by issuing the following command. The reposit
 git clone https://github.com/ASSEM-KARMI/Object-Detection.get
 
 
-This downloads everything into a folder called Object-Detection. That's a little long to work with, so rename the folder to "tflite1" and then cd into it:
-mv object-detection  tflite1
-cd tflite1
-We'll work in this /home/pi/tflite1 directory for the rest of the guide. Next up is to create a virtual environment called "tflite1-env".
+This downloads everything into a folder called Object-Detection. That's a little long to work with, so rename the folder to "TFlite" and then cd into it:
+mv object-detection TFlite
+cd TFlite
+We'll work in this /home/pi/TFlite directory for the rest of the guide. Next up is to create a virtual environment called "TFlite-env".
 
 
 Install virtualenv by issuing:
 sudo pip3 install virtualenv
-Then, create the "tflite1-env" virtual environment by issuing:
-python3 -m venv tflite1-env
-This will create a folder called tflite1-env inside the tflite1 directory. The tflite1-env folder will hold all the package libraries for this environment. Next, activate the environment by issuing:
-source tflite1-env/bin/activate
-You'll need to issue the source tflite1-env/bin/activate command from inside the /home/pi/tflite1 directory to reactivate the environment every time you open a new terminal window. You can tell when the environment is active by checking if (tflite1-env) appears before the path in your command prompt, as shown in the screenshot below.
+Then, create the "TFlite-env" virtual environment by issuing:
+python3 -m venv TFlite-env 
+source TFlite-env/bin/activate
+You'll need to issue the source TFlite-env/bin/activate command from inside the /home/pi/TFlite directory to reactivate the environment every time you open a new terminal window. You can tell when the environment is active by checking if (TFlite-env) appears before the path in your command prompt, as shown in the screenshot below.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Step 1c. Install TensorFlow Lite dependencies and OpenCV
 Next, we'll install TensorFlow, OpenCV, and all the dependencies needed for both packages. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
@@ -54,24 +53,26 @@ Download the sample model (which can be found on the Object Detection page of th
 wget https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip
 Unzip it to a folder called "Sample_TFLite_model" by issuing (this command automatically creates the folder):
 unzip coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip -d Sample_TFLite_model
-Okay, the sample model is all ready to go!
+Okay, the sample model is all ready to go! :) ;)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Step 1e. Run the TensorFlow Lite model!
 It's time to see the TFLite object detection model in action! First, free up memory and processing power by closing any applications you aren't using. Also, make sure you have your webcam or Picamera plugged in.
 
-Run the real-time webcam detection script by issuing the following command from inside the /home/pi/tflite1 directory. (Before running the command, make sure the tflite1-env environment is active by checking that (tflite1-env) appears in front of the command prompt.) The TFLite_detection_webcam.py script will work with either a Picamera or a USB webcam.
+
+webcam
+Run the real-time webcam detection script by issuing the following command from inside the /home/pi/TFlite directory. (Before running the command, make sure the tflite1-env environment is active by checking that (TFlite-env) appears in front of the command prompt.) The TFLite_detection_webcam.py script will work with either a Picamera or a USB webcam.
 python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model
 After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
 
-Part 3 of my TensorFlow Lite training guide gives instructions for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use python3 rather than python when running the scripts.
 
 Image
 To run the image detection script, issue:
-python TFLite_detection_image.py --modeldir=TFLite_model
-The image will appear with all objects labeled. Press 'q' to close the image and end the script. By default, the image detection script will open an image named 'test1.jpg'. To open a specific image file, use the --image option:
-python TFLite_detection_image.py --modeldir=TFLite_model --image=squirrel.jpg
+python TFLite_detection_image.py --modeldir=Sample_TFLite_model
+The image will appear with all objects labeled. Press 'q' to close the image and end the script.
+To open a specific image file, use the --image option:
+python TFLite_detection_image.py --modeldir=Sample_TFLite_model --image=image.jpg
+
 It can also open an entire folder full of images and perform detection on each image. There can only be images files in the folder, or errors will occur. To specify which folder has images to perform detection on, use the --imagedir option:
+python TFLite_detection_image.py --modeldir=Sample_TFLite_model --imagedir=test
 
-python TFLite_detection_image.py --modeldir=TFLite_model --imagedir=test_image
-
-
+Press any key (other than 'q') to advance to the next image.
