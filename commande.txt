@@ -19,7 +19,7 @@ While we're at it, let's make sure the camera interface is enabled in the Raspbe
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Step 1b. Download this repository and create virtual environment
 Next, clone this GitHub repository by issuing the following command. The repository contains the scripts we'll use to run TensorFlow Lite, as well as a shell script that will make installing everything easier. Issue:
-git clone https://github.com/ASSEM-KARMI/Object-Detection
+git clone https://github.com/ASSEM-KARMI/Object-Detection.get
 
 
 This downloads everything into a folder called Object-Detection. That's a little long to work with, so rename the folder to "tflite1" and then cd into it:
